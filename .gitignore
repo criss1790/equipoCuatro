@@ -1,5 +1,4 @@
-
-# Android Studio
+ Android Studio
 .idea/
 *.iml
 
@@ -19,7 +18,3 @@ local.properties
 
 # Logs
 *.log
-
-# Sistema operativo
-.DS_Store
-Thumbs.db
