@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">Pico_Botella</string>
+    <string name="app_name">Pico Botella</string>
+    <string name="btn_presioname">Presióname</string>
+    <string name="toast_estrella">¡Favoritos!</string>
+    <string name="toast_sonido_on">Sonido activado</string>
+    <string name="toast_sonido_off">Sonido desactivado</string>
+    <string name="toast_instrucciones">Instrucciones del juego</string>
+    <string name="toast_agregar">Agregar retos</string>
+    <string name="toast_compartir">Compartir app</string>
 </resources>
