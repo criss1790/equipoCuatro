@@ -1,1 +1,18 @@
-/build
+# Android / Gradle
+.gradle/
+build/
+*/build/
+
+# Android Studio
+.idea/
+*.iml
+
+# Kotlin
+.kotlin/
+
+# Archivos locales de configuración
+local.properties
+
+# Sistema operativo
+.DS_Store
+Thumbs.db

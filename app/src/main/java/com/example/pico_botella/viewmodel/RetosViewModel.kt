@@ -2,10 +2,10 @@ package com.example.pico_botella.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pico_botella.data.repositorio.RepositorioRetosFalso
 import com.example.pico_botella.domain.modelo.Reto
 import com.example.pico_botella.domain.repositorio.RepositorioRetos
 import com.example.pico_botella.ui.estado.EstadoUI
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,8 +14,10 @@ import kotlinx.coroutines.launch
 
 // ViewModel de la pantalla principal: lleva el contador regresivo,
 // el estado del sonido y la obtención de un reto al presionar el botón.
+// El repositorio llega por constructor (inyección de dependencias) a través
+// de FabricaRetosViewModel, para poder cambiarlo por otro en tests o a futuro.
 class RetosViewModel(
-    private val repositorioRetos: RepositorioRetos = RepositorioRetosFalso()
+    private val repositorioRetos: RepositorioRetos
 ) : ViewModel() {
 
     private val _valorContador = MutableStateFlow(VALOR_INICIAL_CONTADOR)
@@ -59,14 +61,26 @@ class RetosViewModel(
                         _estadoReto.value = EstadoUI.Exito(retos.random())
                     }
                 }
+            } catch (excepcion: CancellationException) {
+                // La cancelación es el mecanismo normal de las corutinas para detenerse:
+                // se relanza para no confundirla con un error de datos
+                throw excepcion
             } catch (excepcion: Exception) {
-                _estadoReto.value = EstadoUI.Error(excepcion.message ?: "Ocurrió un error inesperado")
+                _estadoReto.value = EstadoUI.Error(excepcion.message ?: MENSAJE_ERROR_DESCONOCIDO)
             }
         }
+    }
+
+    // Vuelve al estado Vacio cuando la UI ya mostró el resultado (éxito o error).
+    // Sin esto, el StateFlow re-emitiría el último valor al volver a coleccionar
+    // (por ejemplo al rotar la pantalla) y el reto se repetiría.
+    fun confirmarEstadoMostrado() {
+        _estadoReto.value = EstadoUI.Vacio
     }
 
     companion object {
         private const val VALOR_INICIAL_CONTADOR = 3
         private const val MILISEGUNDOS_POR_PASO = 1000L
+        private const val MENSAJE_ERROR_DESCONOCIDO = "Ocurrió un error inesperado"
     }
 }

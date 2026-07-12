@@ -26,6 +26,9 @@ android {
             )
         }
     }
+    buildFeatures {
+        viewBinding = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -49,6 +52,8 @@ dependencies {
     // ViewModel + viewModelScope para la capa viewmodel (MVVM)
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
     testImplementation(libs.junit)
+    // Permite probar corutinas y viewModelScope en tests unitarios (Dispatchers.setMain, runTest)
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
