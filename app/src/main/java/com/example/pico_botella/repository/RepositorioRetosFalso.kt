@@ -1,7 +1,6 @@
-package com.example.pico_botella.data.repositorio
+package com.example.pico_botella.repository
 
-import com.example.pico_botella.domain.modelo.Reto
-import com.example.pico_botella.domain.repositorio.RepositorioRetos
+import com.example.pico_botella.model.Reto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 

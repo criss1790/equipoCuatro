@@ -2,9 +2,10 @@ package com.example.pico_botella.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pico_botella.domain.modelo.Reto
-import com.example.pico_botella.domain.repositorio.RepositorioRetos
-import com.example.pico_botella.ui.estado.EstadoUI
+import com.example.pico_botella.model.Reto
+import com.example.pico_botella.repository.RepositorioRetos
+import com.example.pico_botella.model.EstadoUI
+import com.example.pico_botella.utils.Constantes
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +21,7 @@ class RetosViewModel(
     private val repositorioRetos: RepositorioRetos
 ) : ViewModel() {
 
-    private val _valorContador = MutableStateFlow(VALOR_INICIAL_CONTADOR)
+    private val _valorContador = MutableStateFlow(Constantes.VALOR_INICIAL_CONTADOR)
     val valorContador: StateFlow<Int> = _valorContador.asStateFlow()
 
     private val _sonidoActivo = MutableStateFlow(true)
@@ -36,9 +37,9 @@ class RetosViewModel(
     // Cuenta hacia atrás desde el valor inicial hasta cero usando coroutines
     private fun iniciarContadorRegresivo() {
         viewModelScope.launch {
-            _valorContador.value = VALOR_INICIAL_CONTADOR
+            _valorContador.value = Constantes.VALOR_INICIAL_CONTADOR
             while (_valorContador.value > 0) {
-                delay(MILISEGUNDOS_POR_PASO)
+                delay(Constantes.MILISEGUNDOS_POR_PASO)
                 _valorContador.value -= 1
             }
         }
@@ -66,7 +67,7 @@ class RetosViewModel(
                 // se relanza para no confundirla con un error de datos
                 throw excepcion
             } catch (excepcion: Exception) {
-                _estadoReto.value = EstadoUI.Error(excepcion.message ?: MENSAJE_ERROR_DESCONOCIDO)
+                _estadoReto.value = EstadoUI.Error(excepcion.message ?: Constantes.MENSAJE_ERROR_DESCONOCIDO)
             }
         }
     }
@@ -76,11 +77,5 @@ class RetosViewModel(
     // (por ejemplo al rotar la pantalla) y el reto se repetiría.
     fun confirmarEstadoMostrado() {
         _estadoReto.value = EstadoUI.Vacio
-    }
-
-    companion object {
-        private const val VALOR_INICIAL_CONTADOR = 3
-        private const val MILISEGUNDOS_POR_PASO = 1000L
-        private const val MENSAJE_ERROR_DESCONOCIDO = "Ocurrió un error inesperado"
     }
 }

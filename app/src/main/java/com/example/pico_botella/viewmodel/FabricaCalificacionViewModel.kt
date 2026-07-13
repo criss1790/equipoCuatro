@@ -3,8 +3,8 @@ package com.example.pico_botella.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.pico_botella.data.repositorio.AlmacenamientoCalificacionLocal
-import com.example.pico_botella.domain.repositorio.RepositorioCalificacion
+import com.example.pico_botella.repository.AlmacenamientoCalificacionLocal
+import com.example.pico_botella.repository.RepositorioCalificacion
 
 // Crea instancias de CalificacionViewModel entregándole el repositorio de calificación,
 // igual que FabricaRetosViewModel hace para RetosViewModel.

@@ -1,8 +1,7 @@
-package com.example.pico_botella.data.repositorio
+package com.example.pico_botella.repository
 
 import android.content.Context
-import com.example.pico_botella.domain.modelo.CalificacionModelo
-import com.example.pico_botella.domain.repositorio.RepositorioCalificacion
+import com.example.pico_botella.model.CalificacionModelo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

@@ -1,6 +1,6 @@
-package com.example.pico_botella.domain.repositorio
+package com.example.pico_botella.repository
 
-import com.example.pico_botella.domain.modelo.Reto
+import com.example.pico_botella.model.Reto
 import kotlinx.coroutines.flow.Flow
 
 // Define las operaciones disponibles para obtener los retos del juego,

@@ -1,7 +1,7 @@
 package com.example.pico_botella.viewmodel
 
-import com.example.pico_botella.domain.modelo.CalificacionModelo
-import com.example.pico_botella.domain.repositorio.RepositorioCalificacion
+import com.example.pico_botella.model.CalificacionModelo
+import com.example.pico_botella.repository.RepositorioCalificacion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher

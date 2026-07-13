@@ -1,4 +1,4 @@
-package com.example.pico_botella.domain.modelo
+package com.example.pico_botella.model
 
 // Representa la calificación que un jugador da a la app: estrellas, comentario opcional y fecha de envío.
 data class CalificacionModelo(

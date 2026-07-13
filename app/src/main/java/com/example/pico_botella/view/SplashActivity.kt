@@ -1,4 +1,4 @@
-package com.example.pico_botella
+package com.example.pico_botella.view
 
 import android.content.Intent
 import android.os.Build
@@ -8,6 +8,8 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.pico_botella.R
+import com.example.pico_botella.utils.Constantes
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -16,9 +18,6 @@ import kotlinx.coroutines.launch
  * Presenta una animación Lottie de botella durante 5 segundos y luego navega a MainActivity.
  */
 class SplashActivity : AppCompatActivity() {
-
-    // Duración exacta del splash: 5 segundos.
-    private val TIEMPO_SPLASH: Long = 5000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,12 +60,12 @@ class SplashActivity : AppCompatActivity() {
     }
 
     /**
-     * Espera TIEMPO_SPLASH milisegundos con una coroutine ligada al ciclo de vida
+     * Espera Constantes.TIEMPO_SPLASH_MS milisegundos con una coroutine ligada al ciclo de vida
      * y luego navega a MainActivity. lifecycleScope cancela automáticamente si la Activity se destruye.
      */
     private fun programarNavegacionAutomatica() {
         lifecycleScope.launch {
-            delay(TIEMPO_SPLASH)
+            delay(Constantes.TIEMPO_SPLASH_MS)
             abrirPantallaPrincipal()
         }
     }

@@ -2,8 +2,9 @@ package com.example.pico_botella.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pico_botella.domain.modelo.CalificacionModelo
-import com.example.pico_botella.domain.repositorio.RepositorioCalificacion
+import com.example.pico_botella.model.CalificacionModelo
+import com.example.pico_botella.repository.RepositorioCalificacion
+import com.example.pico_botella.utils.Constantes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -65,7 +66,7 @@ class CalificacionViewModel(
     // no se le ha pedido calificar ni ha calificado antes, dispara el diálogo una sola vez
     fun registrarRetoJugado() {
         retosJugados += 1
-        if (retosJugados < RETOS_PARA_PEDIR_CALIFICACION) return
+        if (retosJugados < Constantes.RETOS_PARA_PEDIR_CALIFICACION) return
 
         viewModelScope.launch {
             val yaCalifico = repositorioCalificacion.obtenerCalificacion() != null
@@ -79,9 +80,5 @@ class CalificacionViewModel(
     // Confirma que ya se atendió la señal de mostrar el diálogo automático, para no repetirla
     fun confirmarDialogoAutomaticoMostrado() {
         _mostrarDialogoAutomatico.value = false
-    }
-
-    companion object {
-        private const val RETOS_PARA_PEDIR_CALIFICACION = 3
     }
 }

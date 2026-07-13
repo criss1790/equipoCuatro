@@ -1,8 +1,8 @@
 package com.example.pico_botella.viewmodel
 
-import com.example.pico_botella.domain.modelo.Reto
-import com.example.pico_botella.domain.repositorio.RepositorioRetos
-import com.example.pico_botella.ui.estado.EstadoUI
+import com.example.pico_botella.model.Reto
+import com.example.pico_botella.repository.RepositorioRetos
+import com.example.pico_botella.model.EstadoUI
 import java.io.IOException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers

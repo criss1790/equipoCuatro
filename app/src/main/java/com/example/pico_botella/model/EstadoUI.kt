@@ -1,4 +1,4 @@
-package com.example.pico_botella.ui.estado
+package com.example.pico_botella.model
 
 // Representa los posibles estados de la pantalla mientras se obtienen datos:
 // cargando, éxito con datos, error con mensaje, o sin datos que mostrar.

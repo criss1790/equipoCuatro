@@ -1,6 +1,6 @@
-package com.example.pico_botella.domain.repositorio
+package com.example.pico_botella.repository
 
-import com.example.pico_botella.domain.modelo.CalificacionModelo
+import com.example.pico_botella.model.CalificacionModelo
 
 // Define cómo se guarda y consulta la calificación del jugador, sin importar si el
 // almacenamiento es local (SharedPreferences), una base de datos o una API remota.

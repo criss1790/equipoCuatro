@@ -2,8 +2,8 @@ package com.example.pico_botella.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.pico_botella.data.repositorio.RepositorioRetosFalso
-import com.example.pico_botella.domain.repositorio.RepositorioRetos
+import com.example.pico_botella.repository.RepositorioRetosFalso
+import com.example.pico_botella.repository.RepositorioRetos
 
 // Crea instancias de RetosViewModel entregándole el repositorio que necesita,
 // ya que el ViewModel no tiene un constructor sin parámetros.

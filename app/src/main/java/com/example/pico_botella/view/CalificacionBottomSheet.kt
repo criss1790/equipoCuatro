@@ -1,4 +1,4 @@
-package com.example.pico_botella.ui.calificacion
+package com.example.pico_botella.view
 
 import android.content.Intent
 import android.net.Uri
@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.pico_botella.R
 import com.example.pico_botella.databinding.BottomSheetCalificacionBinding
+import com.example.pico_botella.utils.Constantes
 import com.example.pico_botella.viewmodel.CalificacionViewModel
 import com.example.pico_botella.viewmodel.FabricaCalificacionViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -86,7 +87,7 @@ class CalificacionBottomSheet : BottomSheetDialogFragment() {
     // Simula el redirect que hacen las apps reales al pedir una calificación:
     // abre en el navegador la ficha de Play Store usada como referencia académica
     private fun abrirCalificacionEnPlayStore() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(ENLACE_CALIFICACION_PLAY_STORE))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(Constantes.ENLACE_CALIFICACION_PLAY_STORE))
         startActivity(intent)
     }
 
@@ -100,10 +101,5 @@ class CalificacionBottomSheet : BottomSheetDialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private const val ENLACE_CALIFICACION_PLAY_STORE =
-            "https://play.google.com/store/apps/details?id=com.nequi.MobileApp&hl=es_419&gl=es"
     }
 }

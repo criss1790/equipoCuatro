@@ -1,9 +1,7 @@
-package com.example.pico_botella
+package com.example.pico_botella.view
 
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -11,10 +9,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.pico_botella.R
 import com.example.pico_botella.databinding.ActivityMainBinding
-import com.example.pico_botella.domain.modelo.Reto
-import com.example.pico_botella.ui.calificacion.CalificacionBottomSheet
-import com.example.pico_botella.ui.estado.EstadoUI
+import com.example.pico_botella.model.Reto
+import com.example.pico_botella.model.EstadoUI
+import com.example.pico_botella.utils.AnimadorBotella
+import com.example.pico_botella.utils.Constantes
 import com.example.pico_botella.viewmodel.CalificacionViewModel
 import com.example.pico_botella.viewmodel.FabricaCalificacionViewModel
 import com.example.pico_botella.viewmodel.FabricaRetosViewModel
@@ -90,13 +90,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Aplica animación de parpadeo continuo al botón
+    // Aplica animación de parpadeo continuo al botón (lógica en AnimadorBotella)
     private fun iniciarParpadeoBoton() {
-        val animacionParpadeo = AlphaAnimation(1.0f, 0.2f)
-        animacionParpadeo.duration = 600
-        animacionParpadeo.repeatMode = Animation.REVERSE
-        animacionParpadeo.repeatCount = Animation.INFINITE
-        binding.botonPresioname.startAnimation(animacionParpadeo)
+        AnimadorBotella.iniciarParpadeo(binding.botonPresioname)
     }
 
     // Prepara y reproduce el sonido de fondo en bucle.
@@ -151,8 +147,8 @@ class MainActivity : AppCompatActivity() {
     // Muestra la tarjeta de calificación (ícono estrella o disparo automático),
     // evitando abrirla dos veces si ya está visible
     private fun mostrarDialogoCalificacion() {
-        if (supportFragmentManager.findFragmentByTag(ETIQUETA_DIALOGO_CALIFICACION) != null) return
-        CalificacionBottomSheet().show(supportFragmentManager, ETIQUETA_DIALOGO_CALIFICACION)
+        if (supportFragmentManager.findFragmentByTag(Constantes.ETIQUETA_DIALOGO_CALIFICACION) != null) return
+        CalificacionBottomSheet().show(supportFragmentManager, Constantes.ETIQUETA_DIALOGO_CALIFICACION)
     }
 
     // Sincroniza el reproductor y el ícono con el estado de sonido del ViewModel
@@ -214,9 +210,5 @@ class MainActivity : AppCompatActivity() {
         reproductorSonido?.stop()
         reproductorSonido?.release()
         reproductorSonido = null
-    }
-
-    companion object {
-        private const val ETIQUETA_DIALOGO_CALIFICACION = "dialogo_calificacion"
     }
 }
