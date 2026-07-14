@@ -82,7 +82,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.iconoCompartir.setOnClickListener {
-            mostrarToast(getString(R.string.toast_compartir))
+            // Animación rápida de toque (achica un poco el ícono y lo vuelve a su tamaño)
+            it.animate().scaleX(0.85f).scaleY(0.85f).setDuration(100).withEndAction {
+                it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+
+                // Llamamos al ViewModel para que active el flujo de compartir
+                viewModel.compartirAplicacion()
+            }.start()
         }
 
         binding.botonPresioname.setOnClickListener {
@@ -137,6 +143,15 @@ class MainActivity : AppCompatActivity() {
                         if (mostrar) {
                             mostrarDialogoCalificacion()
                             calificacionViewModel.confirmarDialogoAutomaticoMostrado()
+                        }
+                    }
+                }
+                launch {
+                    viewModel.eventoCompartir.collect { datos->
+                        datos?.let {
+                            ejecutarIntentCompartir(it)
+                            //Le avisamos al ViewModel que ya lo procesamos para que limpie el estado
+                            viewModel.confirmarCompartido()
                         }
                     }
                 }
@@ -210,5 +225,23 @@ class MainActivity : AppCompatActivity() {
         reproductorSonido?.stop()
         reproductorSonido?.release()
         reproductorSonido = null
+    }
+    // Método para estructurar los datos del Criterio 2 de la HU 10 y lanzar el selector nativo
+    private fun ejecutarIntentCompartir(datos: com.example.pico_botella.viewmodel.DatosCompartir){
+        // Formateamos el mensaje tal como lo pide la HU 10
+        val mensajeACompartir = """
+        ${datos.titulo}
+        ${datos.eslogan}
+        ${datos.enlaceDescarga}
+        """.trimIndent()
+        // Creamos un Intent nativo para enviar texto plano
+        val sendIntent = android.content.Intent().apply {
+            action = android.content.Intent.ACTION_SEND
+            putExtra(android.content.Intent.EXTRA_TEXT, mensajeACompartir)
+            type = "text/plain"
+        }
+        // Creamos el Chooser (Bottom Sheet nativo) para elegir qué app usar
+        val chooserIntent =android.content.Intent.createChooser(sendIntent, "Compartir usando:")
+        startActivity(chooserIntent)
     }
 }
