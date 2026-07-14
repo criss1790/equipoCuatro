@@ -60,25 +60,37 @@ class MainActivity : AppCompatActivity() {
     // Asigna listeners a cada ícono de la toolbar y al botón principal
     private fun configurarToolbar() {
         binding.iconoEstrella.setOnClickListener {
-            mostrarDialogoCalificacion()
+            it.animate().scaleX(0.85f).scaleY(0.85f).setDuration(100).withEndAction {
+                it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                mostrarDialogoCalificacion()
+            }.start()
         }
 
         binding.iconoSonido.setOnClickListener {
-            viewModel.alternarSonido()
-            val mensaje = if (viewModel.sonidoActivo.value) {
-                getString(R.string.toast_sonido_on)
-            } else {
-                getString(R.string.toast_sonido_off)
-            }
-            mostrarToast(mensaje)
+            it.animate().scaleX(0.85f).scaleY(0.85f).setDuration(100).withEndAction {
+                it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                viewModel.alternarSonido()
+                val mensaje = if (viewModel.sonidoActivo.value) {
+                    getString(R.string.toast_sonido_on)
+                } else {
+                    getString(R.string.toast_sonido_off)
+                }
+                mostrarToast(mensaje)
+            }.start()
         }
 
         binding.iconoInstrucciones.setOnClickListener {
-            mostrarToast(getString(R.string.toast_instrucciones))
+            it.animate().scaleX(0.85f).scaleY(0.85f).setDuration(100).withEndAction {
+                it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                mostrarToast(getString(R.string.toast_instrucciones))
+            }.start()
         }
 
         binding.iconoAgregar.setOnClickListener {
-            mostrarToast(getString(R.string.toast_agregar))
+            it.animate().scaleX(0.85f).scaleY(0.85f).setDuration(100).withEndAction {
+                it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                mostrarToast(getString(R.string.toast_agregar))
+            }.start()
         }
 
         binding.iconoCompartir.setOnClickListener {
