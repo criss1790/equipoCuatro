@@ -12,4 +12,9 @@ object Constantes {
     const val MENSAJE_ERROR_DESCONOCIDO = "Ocurrió un error inesperado"
     const val ENLACE_CALIFICACION_PLAY_STORE =
         "https://play.google.com/store/apps/details?id=com.nequi.MobileApp&hl=es_419&gl=es"
+
+    // Base de datos Room (HU-0)
+    const val NOMBRE_BASE_DATOS = "pico_botella_db"
+    const val TABLA_RETO = "reto"
+    const val CLAVE_RETO = "clave_reto"
 }
