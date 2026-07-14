@@ -30,6 +30,32 @@ class RetosViewModel(
     private val _estadoReto = MutableStateFlow<EstadoUI<Reto>>(EstadoUI.Vacio)
     val estadoReto: StateFlow<EstadoUI<Reto>> = _estadoReto.asStateFlow()
 
+    // 1. El flujo de datos privado (MutableStateFlow) que guarda temporalmente la información a compartir
+    private val _eventoCompartir = MutableStateFlow<DatosCompartir?>(null)
+    // 2. El flujo público de solo lectura para que la MainActivity pueda observar los cambios
+    val eventoCompartir: StateFlow<DatosCompartir?> = _eventoCompartir.asStateFlow()
+    /**
+    * Prepara los datos requeridos y activa el flujo de compartir.
+    * Se llamará cuando el usuario presione el icono de compartir en la toolbar.
+    */
+    fun compartirAplicacion () {
+        _eventoCompartir.value = DatosCompartir (
+            titulo = "App pico botella",
+            eslogan = "Solo los valientes lo juegan !!",
+            enlaceDescarga = "https://play.google.com/store/apps/details?id=com.nequi.MobileApp&hl=es_419&gl=es"
+        )
+    }
+    /**
+     * Resetea el estado del flujo de compartir a 'null' una vez que la interfaz (MainActivity)
+     * ya ha procesado y mostrado el Bottom Sheet nativo.
+     * Esto previene que se vuelva a abrir el menú de compartir de forma automática al rotar la pantalla.
+     */
+    fun confirmarCompartido() {
+        _eventoCompartir.value = null
+    }
+
+
+
     init {
         iniciarContadorRegresivo()
     }
@@ -79,3 +105,9 @@ class RetosViewModel(
         _estadoReto.value = EstadoUI.Vacio
     }
 }
+
+data class DatosCompartir(
+    val titulo: String,
+    val eslogan: String,
+    val enlaceDescarga: String
+)
