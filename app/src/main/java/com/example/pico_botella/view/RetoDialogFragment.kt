@@ -51,7 +51,11 @@ class RetoDialogFragment(
         if (imgPokemon != null && !reto.pokemonImageUrl.isNullOrEmpty()) {
             Glide.with(this)
                 .load(reto.pokemonImageUrl)
+                .centerInside()
                 .into(imgPokemon)
+        } else if (imgPokemon != null) {
+            // Si no hay URL, ocultamos el icono de galería por defecto
+            imgPokemon.setImageDrawable(null)
         }
 
         // CONFIGURACIÓN DEL CRITERIO 5: Acción del botón cerrar
