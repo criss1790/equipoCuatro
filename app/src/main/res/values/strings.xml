@@ -27,4 +27,7 @@
     <string name="hint_escriba_reto">Escriba el reto</string>
     <string name="boton_cancelar">Cancelar</string>
     <string name="boton_guardar">Guardar</string>
+
+    <!-- Diálogo Editar reto (HU 8.0) -->
+    <string name="titulo_editar_reto">Editar reto</string>
 </resources>

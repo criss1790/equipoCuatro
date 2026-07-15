@@ -11,6 +11,7 @@ import com.example.pico_botella.databinding.FragmentRetosBinding
 import com.example.pico_botella.model.Reto
 import com.example.pico_botella.view.adapter.RetoAdapter
 import com.example.pico_botella.view.dialog.AgregarRetoDialog
+import com.example.pico_botella.view.dialog.EditarRetoDialog
 import com.example.pico_botella.viewmodel.RetoViewModel
 
 // Pantalla de listado de retos (HU 6.0). Estructura del profesor:
@@ -43,7 +44,11 @@ class RetosFragment : Fragment() {
     private fun controladores() {
         adaptador = RetoAdapter(
             listaRetos = emptyList(),
-            alEditar = { /* TODO HU 8.0: EditarRetoDialog */ },
+            alEditar = { reto ->
+                EditarRetoDialog(requireContext(), reto) { retoActualizado ->
+                    viewModel.actualizarReto(retoActualizado)
+                }.mostrar()
+            },
             alEliminar = { /* TODO HU 9.0: EliminarRetoDialog */ }
         )
         binding.listaRetos.layoutManager = LinearLayoutManager(requireContext())
