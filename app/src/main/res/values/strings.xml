@@ -21,4 +21,10 @@
     <string name="desc_icono_reto">Reto</string>
     <string name="desc_editar_reto">Editar reto</string>
     <string name="desc_eliminar_reto">Eliminar reto</string>
+
+    <!-- Diálogo Agregar reto (HU 7.0) -->
+    <string name="titulo_agregar_reto">Agregar reto</string>
+    <string name="hint_escriba_reto">Escriba el reto</string>
+    <string name="boton_cancelar">Cancelar</string>
+    <string name="boton_guardar">Guardar</string>
 </resources>

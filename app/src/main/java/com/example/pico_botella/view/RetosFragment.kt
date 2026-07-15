@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pico_botella.databinding.FragmentRetosBinding
+import com.example.pico_botella.model.Reto
 import com.example.pico_botella.view.adapter.RetoAdapter
+import com.example.pico_botella.view.dialog.AgregarRetoDialog
 import com.example.pico_botella.viewmodel.RetoViewModel
 
 // Pantalla de listado de retos (HU 6.0). Estructura del profesor:
@@ -52,7 +54,9 @@ class RetosFragment : Fragment() {
         }
 
         binding.botonFlotanteAgregar.setOnClickListener {
-            // TODO HU 7.0: AgregarRetoDialog → viewModel.insertarReto(...)
+            AgregarRetoDialog(requireContext()) { textoReto ->
+                viewModel.insertarReto(Reto(texto = textoReto))
+            }.mostrar()
         }
     }
 
