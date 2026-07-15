@@ -33,6 +33,7 @@
             android:src="@drawable/estrella"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
+            app:tint="@color/naranja"
             android:contentDescription="Favoritos"/>
 
         <ImageView
@@ -43,6 +44,7 @@
             android:src="@drawable/sonido"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
+            app:tint="@color/naranja"
             android:contentDescription="Sonido"/>
 
         <ImageView
@@ -53,6 +55,7 @@
             android:src="@drawable/control"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
+            app:tint="@color/naranja"
             android:contentDescription="Instrucciones"/>
 
         <ImageView
@@ -63,6 +66,7 @@
             android:src="@drawable/agregar"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
+            app:tint="@color/naranja"
             android:contentDescription="Agregar retos"/>
 
         <ImageView
@@ -73,6 +77,7 @@
             android:src="@drawable/compartir"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
+            app:tint="@color/naranja"
             android:contentDescription="Compartir"/>
 
     </LinearLayout>
