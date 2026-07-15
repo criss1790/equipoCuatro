@@ -36,7 +36,14 @@ class MainActivity : AppCompatActivity() {
     private var reproductorGiro: MediaPlayer? = null
 
     private val viewModel: RetosViewModel by lazy {
-        ViewModelProvider(this, FabricaRetosViewModel())[RetosViewModel::class.java]
+        // 1. Creamos el repositorio de retos de prueba directamente (¡no necesita base de datos!)
+        val repositorioRetos = com.example.pico_botella.repository.RepositorioRetosFalso()
+
+        // 2. Inicializamos la fábrica pasándole este repositorio falso
+        // (Recuerda que el repositorio de Pokémon ya lo pusimos por defecto en el paso anterior)
+        val fabrica = FabricaRetosViewModel(repositorioRetos)
+
+        ViewModelProvider(this, fabrica)[RetosViewModel::class.java]
     }
 
     private val calificacionViewModel: CalificacionViewModel by lazy {
@@ -221,21 +228,31 @@ class MainActivity : AppCompatActivity() {
         binding.botonPresioname.isEnabled = false
     }
 
-    // Muestra el reto obtenido, vuelve a habilitar el botón y confirma al ViewModel
-    // que el estado ya se consumió (evita repetir el Toast al rotar la pantalla)
+    // Muestra el reto obtenido en un diálogo personalizado con Pokémon,
+    // vuelve a habilitar el botón y confirma al ViewModel
     private fun mostrarContenido(reto: Reto) {
         binding.botonPresioname.isEnabled = true
-        binding.botonPresioname.visibility = android.view.View.VISIBLE // Volvemos a mostrar el botón (Criterio 7)
 
-        // CRITERIO 8: Reanudamos el sonido de fondo si el usuario lo tenía encendido
-        if (viewModel.sonidoActivo.value) {
-            reproductorSonido?.start()
-        }
-        // Volvemos a mostrar el círculo y el texto abajo (Criterio 7)
-        binding.botonPresioname.visibility = android.view.View.VISIBLE
-        binding.textoBotonPresioname.visibility = android.view.View.VISIBLE
+        // En lugar de un Toast, abrimos el hermoso diálogo personalizado con el Pokémon
+        val dialogoReto = RetoDialogFragment(
+            reto = reto,
+            alCerrar = {
+                // Cuando el usuario presione "Cerrar", ejecutamos esta acción:
 
-        mostrarToast(reto.texto)
+                // 1. Reanudamos el sonido de fondo si estaba encendido (Criterio 8)
+                if (viewModel.sonidoActivo.value) {
+                    reproductorSonido?.start()
+                }
+
+                // 2. Volvemos a mostrar el círculo y el texto abajo para volver a jugar (Criterio 7)
+                binding.botonPresioname.visibility = android.view.View.VISIBLE
+                binding.textoBotonPresioname.visibility = android.view.View.VISIBLE
+            }
+        )
+
+        // Mostramos el diálogo en pantalla
+        dialogoReto.show(supportFragmentManager, "dialogo_reto")
+
         calificacionViewModel.registrarRetoJugado()
         viewModel.confirmarEstadoMostrado()
     }

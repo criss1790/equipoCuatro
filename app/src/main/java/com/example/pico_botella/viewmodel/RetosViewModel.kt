@@ -6,6 +6,7 @@ import com.example.pico_botella.model.Reto
 import com.example.pico_botella.repository.RepositorioRetos
 import com.example.pico_botella.model.EstadoUI
 import com.example.pico_botella.model.GeneradorGiro
+import com.example.pico_botella.repository.RepositorioPokemon
 import com.example.pico_botella.utils.Constantes
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
@@ -20,8 +21,11 @@ import kotlinx.coroutines.launch
 // de FabricaRetosViewModel, para poder cambiarlo por otro en tests o a futuro.
 class RetosViewModel(
 
-    private val repositorioRetos: RepositorioRetos
+    private val repositorioRetos: RepositorioRetos,
+    private val repositorioPokemon: RepositorioPokemon // <- Inyectamos el nuevo repositorio de Pokémon
+
 ) : ViewModel() {
+
 
     // Instanciamos nuestro generador de giro matemático
     private val generadorGiro = GeneradorGiro()
@@ -104,7 +108,7 @@ class RetosViewModel(
         _sonidoActivo.value = !_sonidoActivo.value
     }
 
-    // Pide al repositorio los retos disponibles y muestra uno elegido al azar
+    // Pide al repositorio los retos disponibles y muestra uno elegido al azar junto con un Pokemon (HU 12)
     fun cargarRetoAleatorio() {
         viewModelScope.launch {
             _estadoReto.value = EstadoUI.Cargando
@@ -113,7 +117,23 @@ class RetosViewModel(
                     if (retos.isEmpty()) {
                         _estadoReto.value = EstadoUI.Vacio
                     } else {
-                        _estadoReto.value = EstadoUI.Exito(retos.random())
+                        val retoElegido = retos.random()
+
+                        // Buscamos un Pokémon aleatorio en segundo plano de la API
+                        try {
+                            val response = repositorioPokemon.obtenerPokedex()
+                            val pokemones = response.pokemonList
+                            if (pokemones.isNotEmpty()) {
+                                val pokemonAleatorio = pokemones.random()
+                                // Formateamos la imagen a protocolo seguro https
+                                retoElegido.pokemonImageUrl = pokemonAleatorio.imageUrl.replace("http://", "https://")
+                            }
+                        } catch (apiError: Exception) {
+                            // Si el internet falla, no dejamos caer la app, el juego sigue sin el pokemon
+                            retoElegido.pokemonImageUrl = null
+                        }
+
+                        _estadoReto.value = EstadoUI.Exito(retoElegido)
                     }
                 }
             } catch (excepcion: CancellationException) {
