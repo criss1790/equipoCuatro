@@ -60,4 +60,13 @@ class RetoDialogFragment(
             alCerrar()  // 2. Avisa a la MainActivity para que deje el juego listo para otra partida
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        // Forzamos el ancho del diálogo para que ocupe casi toda la pantalla
+        dialog?.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.90).toInt(),
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+    }
 }

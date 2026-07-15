@@ -16,6 +16,8 @@ import com.example.pico_botella.model.Reto
 import com.example.pico_botella.model.EstadoUI
 import com.example.pico_botella.utils.AnimadorBotella
 import com.example.pico_botella.utils.Constantes
+import com.example.pico_botella.data.PicoBotellaDB
+import com.example.pico_botella.repository.RepositorioRetosRoom
 import com.example.pico_botella.viewmodel.CalificacionViewModel
 import com.example.pico_botella.viewmodel.FabricaCalificacionViewModel
 import com.example.pico_botella.viewmodel.FabricaRetosViewModel
@@ -37,11 +39,14 @@ class MainActivity : AppCompatActivity() {
     private var reproductorGiro: MediaPlayer? = null
 
     private val viewModel: RetosViewModel by lazy {
-        // 1. Creamos el repositorio de retos de prueba directamente (¡no necesita base de datos!)
-        val repositorioRetos = com.example.pico_botella.repository.RepositorioRetosFalso()
+        // 1. Obtenemos la base de datos y el DAO
+        val baseDatos = PicoBotellaDB.obtenerBaseDatos(applicationContext)
+        val retoDao = baseDatos.retoDao()
 
-        // 2. Inicializamos la fábrica pasándole este repositorio falso
-        // (Recuerda que el repositorio de Pokémon ya lo pusimos por defecto en el paso anterior)
+        // 2. Inicializamos el repositorio real de Room
+        val repositorioRetos = RepositorioRetosRoom(retoDao)
+
+        // 3. Inicializamos la fábrica pasándole el repositorio real
         val fabrica = FabricaRetosViewModel(repositorioRetos)
 
         ViewModelProvider(this, fabrica)[RetosViewModel::class.java]
