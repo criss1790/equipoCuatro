@@ -109,16 +109,32 @@
         app:layout_constraintTop_toTopOf="@id/imagenBotella" />
 
     <!-- Botón parpadeante inferior -->
-    <Button
-        android:id="@+id/botonPresioname"
-        android:layout_width="220dp"
-        android:layout_height="56dp"
-        android:layout_marginBottom="40dp"
-        android:background="@drawable/btn_naranja_redondeado"
-        android:text="@string/btn_presioname"
+    <View
+    android:id="@+id/botonPresioname"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/circle_orange"
+    android:clickable="true"
+    android:focusable="true"
+    android:elevation="6dp"
+    app:layout_constraintBottom_toTopOf="@id/textoBotonPresioname"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textoBotonPresioname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:text="Presióname"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:shadowColor="#80000000"
+        android:shadowDx="1.5"
+        android:shadowDy="1.5"
+        android:shadowRadius="3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
