@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Pico Botella</string>
+    <string name="btn_presioname">Presióname</string>
+    <string name="toast_sonido_on">Sonido activado</string>
+    <string name="toast_sonido_off">Sonido desactivado</string>
+    <string name="toast_instrucciones">Instrucciones del juego</string>
+    <string name="toast_agregar">Agregar retos</string>
+    <string name="toast_compartir">Compartir app</string>
+
+    <string name="titulo_calificacion">Califica tu experiencia</string>
+    <string name="mensaje_calificacion">Tu opinión nos ayuda a mejorar el juego</string>
+    <string name="hint_comentario_calificacion">Cuéntanos qué te pareció (opcional)</string>
+    <string name="boton_calificar">Calificar</string>
+    <string name="boton_calificar_despues">Calificar después</string>
+    <string name="mensaje_agradecimiento_calificacion">¡Gracias por tu opinión! Te llevamos a Play Store para calificar</string>
+</resources>
