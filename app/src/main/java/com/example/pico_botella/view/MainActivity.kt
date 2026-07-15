@@ -117,20 +117,24 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.botonPresioname.setOnClickListener {
+            // BLOQUEO INMEDIATO: Evita que el usuario lo hunda infinitas veces
+            binding.botonPresioname.isEnabled = false
+            
             it.animate().scaleX(0.85f).scaleY(0.85f).setDuration(100).withEndAction {
-                it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).withEndAction {
+                    // DESAPARICIÓN TOTAL: Limpia animaciones y oculta el botón y las letras
+                    binding.botonPresioname.clearAnimation() 
+                    binding.botonPresioname.visibility = android.view.View.GONE
+                    binding.textoBotonPresioname.visibility = android.view.View.GONE
 
-                // CRITERIO 8: Pausar el sonido de fondo si está activo al iniciar la partida
-                if (viewModel.sonidoActivo.value) {
-                    reproductorSonido?.pause()
-                }
+                    // Pausar sonido de fondo si aplica
+                    if (viewModel.sonidoActivo.value) {
+                        reproductorSonido?.pause()
+                    }
 
-                // Ocultamos tanto el círculo como el texto de abajo
-                binding.botonPresioname.visibility = android.view.View.GONE
-                binding.textoBotonPresioname.visibility = android.view.View.GONE
-
-                // Le pide al ViewModel que calcule e inicie el giro
-                viewModel.iniciarGiroBotella()
+                    // Inicia el giro de la botella
+                    viewModel.iniciarGiroBotella()
+                }.start()
             }.start()
         }
     }
@@ -160,6 +164,14 @@ class MainActivity : AppCompatActivity() {
                 launch {
                     viewModel.valorContador.collect { valor ->
                         binding.textoContador.text = valor.toString()
+                        // El botón reaparece exactamente cuando el contador llega a 0 (HU 11)
+                        if (valor == 0) {
+                            binding.botonPresioname.visibility = android.view.View.VISIBLE
+                            binding.textoBotonPresioname.visibility = android.view.View.VISIBLE
+                            binding.botonPresioname.isEnabled = true
+                            // Reiniciamos el parpadeo ya que se limpió al ocultarlo
+                            iniciarParpadeoBoton()
+                        }
                     }
                 }
                 launch {
@@ -235,6 +247,9 @@ class MainActivity : AppCompatActivity() {
     // vuelve a habilitar el botón y confirma al ViewModel
     private fun mostrarContenido(reto: Reto) {
         binding.botonPresioname.isEnabled = true
+        
+        // OCULTAR CONTADOR AL MOSTRAR EL DIÁLOGO
+        binding.textoContador.visibility = android.view.View.GONE
 
         // En lugar de un Toast, abrimos el hermoso diálogo personalizado con el Pokémon
         val dialogoReto = RetoDialogFragment(
@@ -246,10 +261,6 @@ class MainActivity : AppCompatActivity() {
                 if (viewModel.sonidoActivo.value) {
                     reproductorSonido?.start()
                 }
-
-                // 2. Volvemos a mostrar el círculo y el texto abajo para volver a jugar (Criterio 7)
-                binding.botonPresioname.visibility = android.view.View.VISIBLE
-                binding.textoBotonPresioname.visibility = android.view.View.VISIBLE
             }
         )
 
@@ -355,6 +366,10 @@ class MainActivity : AppCompatActivity() {
                 reproductorGiro?.stop()
                 reproductorGiro?.release()
                 reproductorGiro = null
+                
+                // MOSTRAR CONTADOR AL DETENERSE LA BOTELLA (Criterio 5)
+                binding.textoContador.visibility = android.view.View.VISIBLE
+
                 // Iniciamos la cuenta regresiva en el ViewModel (Criterio 5)
                 viewModel.iniciarCuentaRegresiva()
 

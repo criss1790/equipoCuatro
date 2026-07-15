@@ -94,13 +94,8 @@ class RetosViewModel(
 
     // Cuenta hacia atrás desde el valor inicial hasta cero usando coroutines
     private fun iniciarContadorRegresivo() {
-        viewModelScope.launch {
-            _valorContador.value = Constantes.VALOR_INICIAL_CONTADOR
-            while (_valorContador.value > 0) {
-                delay(Constantes.MILISEGUNDOS_POR_PASO)
-                _valorContador.value -= 1
-            }
-        }
+        // Se elimina la cuenta regresiva inicial del init para cumplir con el requisito
+        // de que el contador no aparezca al iniciar la app.
     }
 
     // Cambia el estado del sonido entre activo e inactivo
@@ -157,12 +152,13 @@ class RetosViewModel(
      */
     fun iniciarCuentaRegresiva() {
         viewModelScope.launch {
-            // Recorremos los números del 3 al 0 en orden descendente
-            for (segundo in 3 downTo 0) {
+            // Recorremos los números del 3 al 1 con pausa de 1 segundo
+            for (segundo in 3 downTo 1) {
                 _valorContador.value = segundo
-                delay(1000) // Pausa la corrutina por 1000 milisegundos (1 segundo)
+                delay(1000)
             }
-            //Criterio 6
+            // Al llegar a 0, lo emitimos e inmediatamente cargamos el reto (Criterio 6)
+            _valorContador.value = 0
             cargarRetoAleatorio()
         }
     }
