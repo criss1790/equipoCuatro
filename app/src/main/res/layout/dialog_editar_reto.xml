@@ -38,7 +38,7 @@
             android:gravity="end">
 
             <!-- C4 — Cancelar naranja -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/botonCancelar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                 android:textColor="@color/white" />
 
             <!-- C5 — Guardar naranja, SIEMPRE habilitado (sin TextWatcher) -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/botonGuardar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

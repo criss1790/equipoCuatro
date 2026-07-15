@@ -4,6 +4,8 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -39,10 +41,20 @@ class EditarRetoDialog(
         binding.campoReto.setText(reto.texto)
         binding.campoReto.setSelection(binding.campoReto.text.length)
 
+        // C5 — Guardar reacciona en tiempo real
+        binding.botonGuardar.isEnabled = binding.campoReto.text.isNotBlank()
+        binding.campoReto.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) {}
+            override fun onTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) {
+                binding.botonGuardar.isEnabled = !s.isNullOrBlank()
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
         // C4 — Cancelar cierra sin actualizar
         binding.botonCancelar.setOnClickListener { dialogo.dismiss() }
 
-        // C5 + C6 — Guardar SIEMPRE habilitado (a diferencia de HU 7.0, aquí NO hay TextWatcher)
+        // C6 — Guardar entrega el texto y cierra
         binding.botonGuardar.setOnClickListener {
             val retoActualizado = reto.copy(
                 texto = binding.campoReto.text.toString().trim()
