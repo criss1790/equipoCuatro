@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         binding.iconoInstrucciones.setOnClickListener {
             it.animate().scaleX(0.85f).scaleY(0.85f).setDuration(100).withEndAction {
                 it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
-                mostrarToast(getString(R.string.toast_instrucciones))
+                startActivity(Intent(this, InstruccionesActivity::class.java))
             }.start()
         }
 

@@ -20,6 +20,10 @@
             android:exported="false" />
 
         <activity
+            android:name=".view.InstruccionesActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".view.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
