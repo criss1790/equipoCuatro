@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.pico_botella.model.Reto
 import com.example.pico_botella.repository.RepositorioRetos
 import com.example.pico_botella.model.EstadoUI
+import com.example.pico_botella.model.GeneradorGiro
 import com.example.pico_botella.utils.Constantes
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
@@ -18,8 +19,17 @@ import kotlinx.coroutines.launch
 // El repositorio llega por constructor (inyección de dependencias) a través
 // de FabricaRetosViewModel, para poder cambiarlo por otro en tests o a futuro.
 class RetosViewModel(
+
     private val repositorioRetos: RepositorioRetos
 ) : ViewModel() {
+
+    // Instanciamos nuestro generador de giro matemático
+    private val generadorGiro = GeneradorGiro()
+
+
+    // El flujo que observará la MainActivity para saber a qué ángulo girar
+    private val _eventoGirarBotella = MutableStateFlow<Float?>(null)
+    val eventoGirarBotella: StateFlow<Float?> = _eventoGirarBotella.asStateFlow()
 
     private val _valorContador = MutableStateFlow(Constantes.VALOR_INICIAL_CONTADOR)
     val valorContador: StateFlow<Int> = _valorContador.asStateFlow()
@@ -53,6 +63,24 @@ class RetosViewModel(
     fun confirmarCompartido() {
         _eventoCompartir.value = null
     }
+    /**
+     * Inicia el proceso de giro calculando el ángulo destino de forma limpia.
+     */
+    fun iniciarGiroBotella() {
+        // Le delegamos todo el cálculo matemático a la clase especializada
+        val anguloDestino = generadorGiro.calcularSiguienteAngulo()
+        // Emitimos el ángulo hacia la vista
+        _eventoGirarBotella.value = anguloDestino
+    }
+    /**
+     * Limpia el estado una vez que la MainActivity comenzó a girar la botella
+     */
+    fun confirmarGiroIniciado() {
+        _eventoGirarBotella.value = null
+
+    }
+
+
 
 
 
@@ -104,6 +132,21 @@ class RetosViewModel(
     fun confirmarEstadoMostrado() {
         _estadoReto.value = EstadoUI.Vacio
     }
+    /**
+     * Ejecuta una cuenta regresiva asíncrona de 3 a 0 segundo a segundo (HU 11 - Criterio 5)
+     */
+    fun iniciarCuentaRegresiva() {
+        viewModelScope.launch {
+            // Recorremos los números del 3 al 0 en orden descendente
+            for (segundo in 3 downTo 0) {
+                _valorContador.value = segundo
+                delay(1000) // Pausa la corrutina por 1000 milisegundos (1 segundo)
+            }
+            //Criterio 6
+            cargarRetoAleatorio()
+        }
+    }
+
 }
 
 data class DatosCompartir(

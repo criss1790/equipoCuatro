@@ -20,6 +20,7 @@ import com.example.pico_botella.viewmodel.FabricaCalificacionViewModel
 import com.example.pico_botella.viewmodel.FabricaRetosViewModel
 import com.example.pico_botella.viewmodel.RetosViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 /**
  * Pantalla principal del juego Pico Botella.
@@ -31,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private var reproductorSonido: MediaPlayer? = null
+
+    private var reproductorGiro: MediaPlayer? = null
 
     private val viewModel: RetosViewModel by lazy {
         ViewModelProvider(this, FabricaRetosViewModel())[RetosViewModel::class.java]
@@ -104,7 +107,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.botonPresioname.setOnClickListener {
-            viewModel.cargarRetoAleatorio()
+            it.animate().scaleX(0.85f).scaleY(0.85f).setDuration(100).withEndAction {
+                it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+
+                // CRITERIO 8: Pausar el sonido de fondo si está activo al iniciar la partida
+                if (viewModel.sonidoActivo.value) {
+                    reproductorSonido?.pause()
+                }
+
+                // Ocultamos tanto el círculo como el texto de abajo
+                binding.botonPresioname.visibility = android.view.View.GONE
+                binding.textoBotonPresioname.visibility = android.view.View.GONE
+
+                // Le pide al ViewModel que calcule e inicie el giro
+                viewModel.iniciarGiroBotella()
+            }.start()
         }
     }
 
@@ -167,6 +184,16 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
+                launch {
+                    viewModel.eventoGirarBotella.collect { anguloDestino ->
+                        anguloDestino?.let {
+                            iniciarAnimacionBotella(it)
+                            // Le confirmamos al ViewModel que ya iniciamos la animación
+                            viewModel.confirmarGiroIniciado()
+
+                        }
+                    }
+                }
             }
         }
     }
@@ -198,18 +225,37 @@ class MainActivity : AppCompatActivity() {
     // que el estado ya se consumió (evita repetir el Toast al rotar la pantalla)
     private fun mostrarContenido(reto: Reto) {
         binding.botonPresioname.isEnabled = true
+        binding.botonPresioname.visibility = android.view.View.VISIBLE // Volvemos a mostrar el botón (Criterio 7)
+
+        // CRITERIO 8: Reanudamos el sonido de fondo si el usuario lo tenía encendido
+        if (viewModel.sonidoActivo.value) {
+            reproductorSonido?.start()
+        }
+        // Volvemos a mostrar el círculo y el texto abajo (Criterio 7)
+        binding.botonPresioname.visibility = android.view.View.VISIBLE
+        binding.textoBotonPresioname.visibility = android.view.View.VISIBLE
+
         mostrarToast(reto.texto)
         calificacionViewModel.registrarRetoJugado()
         viewModel.confirmarEstadoMostrado()
     }
 
-    // Muestra un mensaje de error, vuelve a habilitar el botón y confirma el consumo del estado
+    // Muestra un mensaje de error y vuelve a hacer visible el botón principal
     private fun mostrarError(mensaje: String) {
         binding.botonPresioname.isEnabled = true
+        binding.botonPresioname.visibility = android.view.View.VISIBLE // Volvemos a mostrar el botón en caso de error (Criterio 7)
+
+        // CRITERIO 8: Reanudamos el sonido de fondo en caso de error si estaba encendido
+        if (viewModel.sonidoActivo.value) {
+            reproductorSonido?.start()
+        }
+        // Volvemos a mostrar el círculo y el texto abajo (Criterio 7)
+        binding.botonPresioname.visibility = android.view.View.VISIBLE
+        binding.textoBotonPresioname.visibility = android.view.View.VISIBLE
+
         mostrarToast(mensaje)
         viewModel.confirmarEstadoMostrado()
     }
-
     private fun mostrarToast(mensaje: String) {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
     }
@@ -234,9 +280,15 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         binding.botonPresioname.clearAnimation()
+        binding.imagenBotella.clearAnimation() // Limpia la animación de la botella por si seguía girando
         reproductorSonido?.stop()
         reproductorSonido?.release()
         reproductorSonido = null
+
+        // Liberamos también el sonido de giro
+        reproductorGiro?.stop()
+        reproductorGiro?.release()
+        reproductorGiro = null
     }
     // Método para estructurar los datos del Criterio 2 de la HU 10 y lanzar el selector nativo
     private fun ejecutarIntentCompartir(datos: com.example.pico_botella.viewmodel.DatosCompartir){
@@ -256,4 +308,43 @@ class MainActivity : AppCompatActivity() {
         val chooserIntent =android.content.Intent.createChooser(sendIntent, "Compartir usando:")
         startActivity(chooserIntent)
     }
+    /**
+     * Realiza la animación física de rotación de la botella (HU 11 - Criterio 1)
+     */
+    private fun iniciarAnimacionBotella(anguloDestino: Float) {
+        // Duración aleatoria entre 3000 ms (3s) y 5000 ms (5s) (Criterio 1)
+        val duracionAleatoria = (3000..5000).random().toLong()
+
+        // INICIAR SONIDO DE GIRO (Criterio 2)
+        val recursoGiro = resources.getIdentifier("botella_giro", "raw", packageName)
+        if (recursoGiro != 0) {
+            // Inicializamos el reproductor secundario
+            reproductorGiro = MediaPlayer.create(this, recursoGiro).apply {
+                isLooping = true // Hace que el sonido suene continuamente en bucle mientras la botella rote
+                start()
+            }
+        }
+
+        binding.imagenBotella.animate()
+
+            .rotation(anguloDestino) // Gira hasta el angulo calculado
+            .setDuration(duracionAleatoria)
+            .setInterpolator(android.view.animation.DecelerateInterpolator()) //// Desacelera al final
+            .withEndAction {
+                //DETENER EL SONIDO AL TERMINAR EL MOVIMIENTO (Criterio 2)
+                reproductorGiro?.stop()
+                reproductorGiro?.release()
+                reproductorGiro = null
+                // Iniciamos la cuenta regresiva en el ViewModel (Criterio 5)
+                viewModel.iniciarCuentaRegresiva()
+
+            }
+            .start()
+
+    }
+
+
+
+
+
 }
