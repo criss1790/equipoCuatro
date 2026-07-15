@@ -24,7 +24,11 @@ abstract class PicoBotellaDB : RoomDatabase() {
                     contexto.applicationContext,
                     PicoBotellaDB::class.java,
                     Constantes.NOMBRE_BASE_DATOS
-                ).build()
+                )
+                    // App de desarrollo: ante un cambio de esquema sin migración,
+                    // Room recrea la base de datos en vez de crashear. No hay datos de producción.
+                    .fallbackToDestructiveMigration(dropAllTables = true)
+                    .build()
                 INSTANCIA = instancia
                 instancia
             }

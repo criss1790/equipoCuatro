@@ -21,6 +21,7 @@ import com.example.pico_botella.viewmodel.FabricaCalificacionViewModel
 import com.example.pico_botella.viewmodel.FabricaRetosViewModel
 import com.example.pico_botella.viewmodel.RetosViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 /**
  * Pantalla principal del juego Pico Botella.
@@ -33,8 +34,17 @@ class MainActivity : AppCompatActivity() {
 
     private var reproductorSonido: MediaPlayer? = null
 
+    private var reproductorGiro: MediaPlayer? = null
+
     private val viewModel: RetosViewModel by lazy {
-        ViewModelProvider(this, FabricaRetosViewModel())[RetosViewModel::class.java]
+        // 1. Creamos el repositorio de retos de prueba directamente (¡no necesita base de datos!)
+        val repositorioRetos = com.example.pico_botella.repository.RepositorioRetosFalso()
+
+        // 2. Inicializamos la fábrica pasándole este repositorio falso
+        // (Recuerda que el repositorio de Pokémon ya lo pusimos por defecto en el paso anterior)
+        val fabrica = FabricaRetosViewModel(repositorioRetos)
+
+        ViewModelProvider(this, fabrica)[RetosViewModel::class.java]
     }
 
     private val calificacionViewModel: CalificacionViewModel by lazy {
@@ -61,21 +71,30 @@ class MainActivity : AppCompatActivity() {
     // Asigna listeners a cada ícono de la toolbar y al botón principal
     private fun configurarToolbar() {
         binding.iconoEstrella.setOnClickListener {
-            mostrarDialogoCalificacion()
+            it.animate().scaleX(0.85f).scaleY(0.85f).setDuration(100).withEndAction {
+                it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                mostrarDialogoCalificacion()
+            }.start()
         }
 
         binding.iconoSonido.setOnClickListener {
-            viewModel.alternarSonido()
-            val mensaje = if (viewModel.sonidoActivo.value) {
-                getString(R.string.toast_sonido_on)
-            } else {
-                getString(R.string.toast_sonido_off)
-            }
-            mostrarToast(mensaje)
+            it.animate().scaleX(0.85f).scaleY(0.85f).setDuration(100).withEndAction {
+                it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                viewModel.alternarSonido()
+                val mensaje = if (viewModel.sonidoActivo.value) {
+                    getString(R.string.toast_sonido_on)
+                } else {
+                    getString(R.string.toast_sonido_off)
+                }
+                mostrarToast(mensaje)
+            }.start()
         }
 
         binding.iconoInstrucciones.setOnClickListener {
-            mostrarToast(getString(R.string.toast_instrucciones))
+            it.animate().scaleX(0.85f).scaleY(0.85f).setDuration(100).withEndAction {
+                it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+                mostrarToast(getString(R.string.toast_instrucciones))
+            }.start()
         }
 
         binding.iconoAgregar.setOnClickListener {
@@ -83,11 +102,31 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.iconoCompartir.setOnClickListener {
-            mostrarToast(getString(R.string.toast_compartir))
+            // Animación rápida de toque (achica un poco el ícono y lo vuelve a su tamaño)
+            it.animate().scaleX(0.85f).scaleY(0.85f).setDuration(100).withEndAction {
+                it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+
+                // Llamamos al ViewModel para que active el flujo de compartir
+                viewModel.compartirAplicacion()
+            }.start()
         }
 
         binding.botonPresioname.setOnClickListener {
-            viewModel.cargarRetoAleatorio()
+            it.animate().scaleX(0.85f).scaleY(0.85f).setDuration(100).withEndAction {
+                it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+
+                // CRITERIO 8: Pausar el sonido de fondo si está activo al iniciar la partida
+                if (viewModel.sonidoActivo.value) {
+                    reproductorSonido?.pause()
+                }
+
+                // Ocultamos tanto el círculo como el texto de abajo
+                binding.botonPresioname.visibility = android.view.View.GONE
+                binding.textoBotonPresioname.visibility = android.view.View.GONE
+
+                // Le pide al ViewModel que calcule e inicie el giro
+                viewModel.iniciarGiroBotella()
+            }.start()
         }
     }
 
@@ -141,6 +180,25 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
+                launch {
+                    viewModel.eventoCompartir.collect { datos->
+                        datos?.let {
+                            ejecutarIntentCompartir(it)
+                            //Le avisamos al ViewModel que ya lo procesamos para que limpie el estado
+                            viewModel.confirmarCompartido()
+                        }
+                    }
+                }
+                launch {
+                    viewModel.eventoGirarBotella.collect { anguloDestino ->
+                        anguloDestino?.let {
+                            iniciarAnimacionBotella(it)
+                            // Le confirmamos al ViewModel que ya iniciamos la animación
+                            viewModel.confirmarGiroIniciado()
+
+                        }
+                    }
+                }
             }
         }
     }
@@ -168,22 +226,51 @@ class MainActivity : AppCompatActivity() {
         binding.botonPresioname.isEnabled = false
     }
 
-    // Muestra el reto obtenido, vuelve a habilitar el botón y confirma al ViewModel
-    // que el estado ya se consumió (evita repetir el Toast al rotar la pantalla)
+    // Muestra el reto obtenido en un diálogo personalizado con Pokémon,
+    // vuelve a habilitar el botón y confirma al ViewModel
     private fun mostrarContenido(reto: Reto) {
         binding.botonPresioname.isEnabled = true
-        mostrarToast(reto.texto)
+
+        // En lugar de un Toast, abrimos el hermoso diálogo personalizado con el Pokémon
+        val dialogoReto = RetoDialogFragment(
+            reto = reto,
+            alCerrar = {
+                // Cuando el usuario presione "Cerrar", ejecutamos esta acción:
+
+                // 1. Reanudamos el sonido de fondo si estaba encendido (Criterio 8)
+                if (viewModel.sonidoActivo.value) {
+                    reproductorSonido?.start()
+                }
+
+                // 2. Volvemos a mostrar el círculo y el texto abajo para volver a jugar (Criterio 7)
+                binding.botonPresioname.visibility = android.view.View.VISIBLE
+                binding.textoBotonPresioname.visibility = android.view.View.VISIBLE
+            }
+        )
+
+        // Mostramos el diálogo en pantalla
+        dialogoReto.show(supportFragmentManager, "dialogo_reto")
+
         calificacionViewModel.registrarRetoJugado()
         viewModel.confirmarEstadoMostrado()
     }
 
-    // Muestra un mensaje de error, vuelve a habilitar el botón y confirma el consumo del estado
+    // Muestra un mensaje de error y vuelve a hacer visible el botón principal
     private fun mostrarError(mensaje: String) {
         binding.botonPresioname.isEnabled = true
+        binding.botonPresioname.visibility = android.view.View.VISIBLE // Volvemos a mostrar el botón en caso de error (Criterio 7)
+
+        // CRITERIO 8: Reanudamos el sonido de fondo en caso de error si estaba encendido
+        if (viewModel.sonidoActivo.value) {
+            reproductorSonido?.start()
+        }
+        // Volvemos a mostrar el círculo y el texto abajo (Criterio 7)
+        binding.botonPresioname.visibility = android.view.View.VISIBLE
+        binding.textoBotonPresioname.visibility = android.view.View.VISIBLE
+
         mostrarToast(mensaje)
         viewModel.confirmarEstadoMostrado()
     }
-
     private fun mostrarToast(mensaje: String) {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
     }
@@ -208,8 +295,71 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         binding.botonPresioname.clearAnimation()
+        binding.imagenBotella.clearAnimation() // Limpia la animación de la botella por si seguía girando
         reproductorSonido?.stop()
         reproductorSonido?.release()
         reproductorSonido = null
+
+        // Liberamos también el sonido de giro
+        reproductorGiro?.stop()
+        reproductorGiro?.release()
+        reproductorGiro = null
     }
+    // Método para estructurar los datos del Criterio 2 de la HU 10 y lanzar el selector nativo
+    private fun ejecutarIntentCompartir(datos: com.example.pico_botella.viewmodel.DatosCompartir){
+        // Formateamos el mensaje tal como lo pide la HU 10
+        val mensajeACompartir = """
+        ${datos.titulo}
+        ${datos.eslogan}
+        ${datos.enlaceDescarga}
+        """.trimIndent()
+        // Creamos un Intent nativo para enviar texto plano
+        val sendIntent = android.content.Intent().apply {
+            action = android.content.Intent.ACTION_SEND
+            putExtra(android.content.Intent.EXTRA_TEXT, mensajeACompartir)
+            type = "text/plain"
+        }
+        // Creamos el Chooser (Bottom Sheet nativo) para elegir qué app usar
+        val chooserIntent =android.content.Intent.createChooser(sendIntent, "Compartir usando:")
+        startActivity(chooserIntent)
+    }
+    /**
+     * Realiza la animación física de rotación de la botella (HU 11 - Criterio 1)
+     */
+    private fun iniciarAnimacionBotella(anguloDestino: Float) {
+        // Duración aleatoria entre 3000 ms (3s) y 5000 ms (5s) (Criterio 1)
+        val duracionAleatoria = (3000..5000).random().toLong()
+
+        // INICIAR SONIDO DE GIRO (Criterio 2)
+        val recursoGiro = resources.getIdentifier("botella_giro", "raw", packageName)
+        if (recursoGiro != 0) {
+            // Inicializamos el reproductor secundario
+            reproductorGiro = MediaPlayer.create(this, recursoGiro).apply {
+                isLooping = true // Hace que el sonido suene continuamente en bucle mientras la botella rote
+                start()
+            }
+        }
+
+        binding.imagenBotella.animate()
+
+            .rotation(anguloDestino) // Gira hasta el angulo calculado
+            .setDuration(duracionAleatoria)
+            .setInterpolator(android.view.animation.DecelerateInterpolator()) //// Desacelera al final
+            .withEndAction {
+                //DETENER EL SONIDO AL TERMINAR EL MOVIMIENTO (Criterio 2)
+                reproductorGiro?.stop()
+                reproductorGiro?.release()
+                reproductorGiro = null
+                // Iniciamos la cuenta regresiva en el ViewModel (Criterio 5)
+                viewModel.iniciarCuentaRegresiva()
+
+            }
+            .start()
+
+    }
+
+
+
+
+
 }

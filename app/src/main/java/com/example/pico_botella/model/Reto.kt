@@ -13,5 +13,8 @@ import java.io.Serializable
 data class Reto(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "texto") var texto: String,
-    @ColumnInfo(name = "categoria") var categoria: String = "Reto"
+    @ColumnInfo(name = "categoria") var categoria: String = "Reto",
+
+    // Imagen del Pokémon que se muestra junto al reto (se guarda de forma temporal).
+    @ColumnInfo(name = "pokemon_image_url") var pokemonImageUrl: String? = null
 ) : Serializable
