@@ -13,4 +13,11 @@
     <string name="boton_calificar">Calificar</string>
     <string name="boton_calificar_despues">Calificar después</string>
     <string name="mensaje_agradecimiento_calificacion">¡Gracias por tu opinión! Te llevamos a Play Store para calificar</string>
+
+    <!-- Instrucciones (HU 5.0) -->
+    <string name="titulo_reglas">Reglas del Juego</string>
+    <string name="titulo_como_jugar">¿Cómo se juega?</string>
+    <string name="desc_como_jugar">Los jugadores forman un círculo y en el centro colocan el dispositivo móvil, luego tocan el botón parpadeante para girar la botella. El jugador que señale la botella debe cumplir el reto que lanza la app, de lo contrario abandona el juego.</string>
+    <string name="titulo_quien_gana">¿Quién gana?</string>
+    <string name="desc_quien_gana">Gana el último jugador que no abandone el juego.</string>
 </resources>

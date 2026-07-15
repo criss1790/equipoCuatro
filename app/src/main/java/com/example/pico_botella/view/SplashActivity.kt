@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.pico_botella.R
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 
 /**
  * Activity de splash que se muestra al iniciar la aplicación.
- * Presenta una animación Lottie de botella durante 5 segundos y luego navega a MainActivity.
+ * Presenta una imagen de botella durante unos segundos y luego navega a MainActivity.
  */
 class SplashActivity : AppCompatActivity() {
 
@@ -24,7 +25,6 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         ocultarBarrasDelSistema()
-        iniciarAnimacionBotella()
         programarNavegacionAutomatica()
     }
 
@@ -47,16 +47,6 @@ class SplashActivity : AppCompatActivity() {
                     or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 )
         }
-    }
-
-    /**
-     * Obtiene la vista Lottie e inicia la animación de la botella en bucle infinito.
-     */
-    private fun iniciarAnimacionBotella() {
-        val imagenBotella: com.airbnb.lottie.LottieAnimationView = findViewById(R.id.imagenBotella)
-        imagenBotella.setAnimation(R.raw.botella)
-        imagenBotella.repeatCount = com.airbnb.lottie.LottieDrawable.INFINITE
-        imagenBotella.playAnimation()
     }
 
     /**
