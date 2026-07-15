@@ -30,4 +30,9 @@
 
     <!-- Diálogo Editar reto (HU 8.0) -->
     <string name="titulo_editar_reto">Editar reto</string>
+
+    <!-- Diálogo Eliminar reto (HU 9.0) -->
+    <string name="titulo_eliminar_reto">¿Desea eliminar el siguiente reto?:</string>
+    <string name="texto_si">SI</string>
+    <string name="texto_no">NO</string>
 </resources>

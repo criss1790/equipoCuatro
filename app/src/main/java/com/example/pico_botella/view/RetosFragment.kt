@@ -12,6 +12,7 @@ import com.example.pico_botella.model.Reto
 import com.example.pico_botella.view.adapter.RetoAdapter
 import com.example.pico_botella.view.dialog.AgregarRetoDialog
 import com.example.pico_botella.view.dialog.EditarRetoDialog
+import com.example.pico_botella.view.dialog.EliminarRetoDialog
 import com.example.pico_botella.viewmodel.RetoViewModel
 
 // Pantalla de listado de retos (HU 6.0). Estructura del profesor:
@@ -49,7 +50,11 @@ class RetosFragment : Fragment() {
                     viewModel.actualizarReto(retoActualizado)
                 }.mostrar()
             },
-            alEliminar = { /* TODO HU 9.0: EliminarRetoDialog */ }
+            alEliminar = { reto ->
+                EliminarRetoDialog(requireContext(), reto) { retoAEliminar ->
+                    viewModel.eliminarReto(retoAEliminar)
+                }.mostrar()
+            }
         )
         binding.listaRetos.layoutManager = LinearLayoutManager(requireContext())
         binding.listaRetos.adapter = adaptador
