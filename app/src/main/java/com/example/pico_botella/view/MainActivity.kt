@@ -1,5 +1,6 @@
 package com.example.pico_botella.view
 
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.Toast
@@ -97,10 +98,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.iconoAgregar.setOnClickListener {
-            it.animate().scaleX(0.85f).scaleY(0.85f).setDuration(100).withEndAction {
-                it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
-                mostrarToast(getString(R.string.toast_agregar))
-            }.start()
+            startActivity(Intent(this, RetosActivity::class.java))
         }
 
         binding.iconoCompartir.setOnClickListener {

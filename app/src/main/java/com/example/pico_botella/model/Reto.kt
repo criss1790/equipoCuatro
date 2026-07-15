@@ -1,16 +1,20 @@
 package com.example.pico_botella.model
 
-// Importaciones necesarias para que Android entienda Room
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.pico_botella.utils.Constantes
+import java.io.Serializable
 
-// @Entity le dice a Room que esto es una tabla de la base de datos
-@Entity(tableName = "tabla_retos")
+// Representa un reto o pregunta que puede salir al jugar.
+// Entidad Room (RA-1): se persiste en la tabla "reto".
+// Serializable para poder viajar en un Bundle entre Fragments (Bundle + Serializable, nunca Safe Args).
+@Entity(tableName = Constantes.TABLA_RETO)
 data class Reto(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val texto: String,
-    val categoria: String,
+    @ColumnInfo(name = "texto") var texto: String,
+    @ColumnInfo(name = "categoria") var categoria: String = "Reto",
 
-    // Aquí guardaremos la imagen del Pokémon de forma temporal
-    var pokemonImageUrl: String? = null
-)
+    // Imagen del Pokémon que se muestra junto al reto (se guarda de forma temporal).
+    @ColumnInfo(name = "pokemon_image_url") var pokemonImageUrl: String? = null
+) : Serializable

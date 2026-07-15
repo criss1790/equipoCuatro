@@ -16,6 +16,10 @@
             android:exported="false" />
 
         <activity
+            android:name=".view.RetosActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".view.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

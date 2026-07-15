@@ -18,3 +18,7 @@ local.properties
 
 # Logs
 *.log
+
+# Instrucciones de Claude Code (solo locales, no suben al repo)
+CLAUDE.md
+docs/HU-*.md

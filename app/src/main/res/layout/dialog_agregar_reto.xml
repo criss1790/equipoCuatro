@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_dialogo_blanco"
+        android:padding="24dp">
+
+        <!-- C2 — título centrado, negro, bold -->
+        <TextView
+            android:id="@+id/tituloDialogo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/titulo_agregar_reto"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+
+        <!-- C3 — caja con hint y línea naranja -->
+        <EditText
+            android:id="@+id/campoReto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/hint_escriba_reto"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/naranja"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLines="3" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <!-- C4 — Cancelar naranja -->
+            <Button
+                android:id="@+id/botonCancelar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/boton_cancelar"
+                android:background="@drawable/btn_naranja_redondeado"
+                android:textColor="@color/white" />
+
+            <!-- C5 — Guardar naranja, deshabilitado por defecto -->
+            <Button
+                android:id="@+id/botonGuardar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/boton_guardar"
+                android:background="@drawable/btn_naranja_redondeado"
+                android:textColor="@color/white"
+                android:enabled="false" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>
