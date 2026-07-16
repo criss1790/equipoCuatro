@@ -1,5 +1,9 @@
 package com.example.pico_botella.repository
 
-// Punto de entrada preparado para una futura fuente de datos local (base de datos).
-// Por ahora no se implementa ninguna función real.
-interface FuenteLocalDatos
+import com.example.pico_botella.data.RetoDao
+
+// Contrato de la fuente de datos local (Room). Expone el DAO de retos;
+// deja de ser un placeholder vacío.
+interface FuenteLocalDatos {
+    fun retoDao(): RetoDao
+}

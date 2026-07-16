@@ -13,6 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 // ViewModel de la pantalla principal: lleva el contador regresivo,
@@ -113,28 +114,31 @@ class RetosViewModel(
         viewModelScope.launch {
             _estadoReto.value = EstadoUI.Cargando
             try {
-                repositorioRetos.obtenerRetos().collect { retos ->
-                    if (retos.isEmpty()) {
-                        _estadoReto.value = EstadoUI.Vacio
-                    } else {
-                        val retoElegido = retos.random()
+                // Usamos first() para obtener la lista actual una sola vez y no dejar la corrutina abierta
+                val retos = repositorioRetos.obtenerRetos().first()
+                
+                if (retos.isEmpty()) {
+                    _estadoReto.value = EstadoUI.Vacio
+                } else {
+                    val retoElegido = retos.random()
 
-                        // Buscamos un Pokémon aleatorio en segundo plano de la API
-                        try {
-                            val response = repositorioPokemon.obtenerPokedex()
-                            val pokemones = response.pokemonList
-                            if (pokemones.isNotEmpty()) {
-                                val pokemonAleatorio = pokemones.random()
-                                // Formateamos la imagen a protocolo seguro https
-                                retoElegido.pokemonImageUrl = pokemonAleatorio.imageUrl.replace("http://", "https://")
-                            }
-                        } catch (apiError: Exception) {
-                            // Si el internet falla, no dejamos caer la app, el juego sigue sin el pokemon
-                            retoElegido.pokemonImageUrl = null
+                    // Buscamos un Pokémon aleatorio en segundo plano de la API
+                    try {
+                        val response = repositorioPokemon.obtenerPokedex()
+                        val pokemones = response.pokemonList
+                        if (pokemones.isNotEmpty()) {
+                            val pokemonAleatorio = pokemones.random()
+                            // Serebii (la URL que trae la API) suele bloquear el acceso desde apps móviles (403 Forbidden).
+                            // Usamos el ID del pokémon para obtener el "official-artwork" desde el repositorio de PokeAPI,
+                            // que es HTTPS, libre y de alta calidad, cumpliendo con consumir la lista de la API de Biuni.
+                            retoElegido.pokemonImageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemonAleatorio.id}.png"
                         }
-
-                        _estadoReto.value = EstadoUI.Exito(retoElegido)
+                    } catch (apiError: Exception) {
+                        // Si el internet falla, no dejamos caer la app, el juego sigue sin el pokemon
+                        retoElegido.pokemonImageUrl = null
                     }
+
+                    _estadoReto.value = EstadoUI.Exito(retoElegido)
                 }
             } catch (excepcion: CancellationException) {
                 // La cancelación es el mecanismo normal de las corutinas para detenerse:
@@ -157,12 +161,13 @@ class RetosViewModel(
      */
     fun iniciarCuentaRegresiva() {
         viewModelScope.launch {
-            // Recorremos los números del 3 al 0 en orden descendente
-            for (segundo in 3 downTo 0) {
+            // Recorremos los números del 3 al 1 con pausa de 1 segundo
+            for (segundo in 3 downTo 1) {
                 _valorContador.value = segundo
-                delay(1000) // Pausa la corrutina por 1000 milisegundos (1 segundo)
+                delay(1000)
             }
-            //Criterio 6
+            // Al llegar a 0, lo emitimos e inmediatamente cargamos el reto (Criterio 6)
+            _valorContador.value = 0
             cargarRetoAleatorio()
         }
     }

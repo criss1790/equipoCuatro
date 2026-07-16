@@ -3,29 +3,242 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black">
+    android:background="#000000">
 
+
+
+
+
+    <!-- Formas decorativas de fondo: círculos suaves relacionados con fiestas y reuniones. -->
+    <ImageView
+        android:id="@+id/circuloDecorativoSuperiorIzquierdo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="-40dp"
+        android:layout_marginTop="-40dp"
+        android:alpha="0.16"
+        android:importantForAccessibility="no"
+        android:src="@drawable/forma_circulo_decorativo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/naranja" />
+
+    <ImageView
+        android:id="@+id/circuloDecorativoSuperiorDerecho"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="-25dp"
+        android:alpha="0.18"
+        android:importantForAccessibility="no"
+        android:src="@drawable/forma_circulo_decorativo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/circuloDecorativoInferiorDerecho"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_marginBottom="-50dp"
+        android:layout_marginEnd="-45dp"
+        android:alpha="0.14"
+        android:importantForAccessibility="no"
+        android:src="@drawable/forma_circulo_decorativo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/naranja" />
+
+    <ImageView
+        android:id="@+id/circuloDecorativoInferiorIzquierdo"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="-15dp"
+        android:layout_marginBottom="70dp"
+        android:alpha="0.16"
+        android:importantForAccessibility="no"
+        android:src="@drawable/forma_circulo_decorativo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Brillo suave detrás de la botella, centrado junto con ella. -->
+    <ImageView
+        android:id="@+id/brilloBotella"
+        android:layout_width="380dp"
+        android:layout_height="380dp"
+        android:importantForAccessibility="no"
+        android:src="@drawable/bg_brillo_botella"
+        app:layout_constraintBottom_toTopOf="@id/textoTitulo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Confeti decorativo alrededor de la botella. -->
+    <ImageView
+        android:id="@+id/confeti1"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:importantForAccessibility="no"
+        android:rotation="20"
+        android:src="@drawable/confeti_pieza"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.22"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15"
+        app:tint="@color/naranja" />
+
+    <ImageView
+        android:id="@+id/confeti2"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:importantForAccessibility="no"
+        android:rotation="-15"
+        android:src="@drawable/confeti_pieza"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.78"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.18"
+        app:tint="@color/azul" />
+
+    <ImageView
+        android:id="@+id/confeti3"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:importantForAccessibility="no"
+        android:rotation="45"
+        android:src="@drawable/confeti_pieza"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.42"
+        app:tint="@color/verde" />
+
+    <ImageView
+        android:id="@+id/confeti4"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:importantForAccessibility="no"
+        android:rotation="-30"
+        android:src="@drawable/confeti_pieza"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.46"
+        app:tint="@color/amarillo" />
+
+    <ImageView
+        android:id="@+id/confeti5"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:importantForAccessibility="no"
+        android:rotation="10"
+        android:src="@drawable/confeti_pieza"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.72"
+        app:tint="@color/naranja" />
+
+    <ImageView
+        android:id="@+id/confeti6"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:importantForAccessibility="no"
+        android:rotation="25"
+        android:src="@drawable/confeti_pieza"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.74"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.68"
+        app:tint="@color/azul" />
+
+    <!-- Estrellas decorativas alrededor de la botella. -->
+    <ImageView
+        android:id="@+id/estrella1"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:alpha="0.9"
+        android:importantForAccessibility="no"
+        android:src="@drawable/estrella"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <ImageView
+        android:id="@+id/estrella2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:alpha="0.85"
+        android:importantForAccessibility="no"
+        android:src="@drawable/estrella"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.84"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.24" />
+
+    <ImageView
+        android:id="@+id/estrella3"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:alpha="0.85"
+        android:importantForAccessibility="no"
+        android:src="@drawable/estrella"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.56" />
+
+    <ImageView
+        android:id="@+id/estrella4"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:alpha="0.85"
+        android:importantForAccessibility="no"
+        android:src="@drawable/estrella"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <!-- Botella central animada (recurso Lottie ya existente en el proyecto). -->
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/imagenBotella"
         android:layout_width="350dp"
         android:layout_height="350dp"
-        app:lottie_rawRes="@raw/botella"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
         app:layout_constraintBottom_toTopOf="@+id/textoTitulo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/botella" />
 
     <TextView
         android:id="@+id/textoTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="pico botella"
-        android:textColor="#FF6A00"
-        android:textSize="40sp"
+        android:layout_marginBottom="48dp"
+        android:fontFamily="sans-serif-black"
+        android:letterSpacing="0.02"
+        android:shadowColor="@color/naranja_oscuro"
+        android:shadowDx="0"
+        android:shadowDy="3"
+        android:shadowRadius="10"
+        android:text="@string/app_name"
+        android:textColor="@color/naranja"
+        android:textSize="42sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Estado Habilitado: Color Vinotinto -->
+    <item android:color="@color/vinotinto" android:state_enabled="true" />
+    <!-- Estado Inhabilitado: Color Gris -->
+    <item android:color="#CCCCCC" android:state_enabled="false" />
+</selector>

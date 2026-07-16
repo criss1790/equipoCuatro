@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_dialogo_blanco"
+        android:padding="24dp">
+
+        <!-- C2 — Título centrado, negro, bold, con los dos puntos finales -->
+        <TextView
+            android:id="@+id/tituloDialogo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/titulo_eliminar_reto"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+
+        <!-- C3 — Texto del reto traído de la BD (se rellena en código) -->
+        <TextView
+            android:id="@+id/textoReto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <!-- C4 — "NO": TextView naranja, NO botón -->
+            <TextView
+                android:id="@+id/textoNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/texto_no"
+                android:textColor="@color/naranja"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:padding="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <!-- C5 — "SI": TextView naranja, NO botón -->
+            <TextView
+                android:id="@+id/textoSi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="@string/texto_si"
+                android:textColor="@color/naranja"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:padding="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

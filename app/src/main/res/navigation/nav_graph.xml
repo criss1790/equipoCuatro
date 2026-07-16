@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/retosFragment">
+
+    <fragment
+        android:id="@+id/retosFragment"
+        android:name="com.example.pico_botella.view.RetosFragment"
+        android:label="@string/titulo_retos"
+        tools:layout="@layout/fragment_retos"
+        xmlns:tools="http://schemas.android.com/tools" />
+</navigation>

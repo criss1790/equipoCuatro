@@ -51,7 +51,11 @@ class RetoDialogFragment(
         if (imgPokemon != null && !reto.pokemonImageUrl.isNullOrEmpty()) {
             Glide.with(this)
                 .load(reto.pokemonImageUrl)
+                .centerInside()
                 .into(imgPokemon)
+        } else if (imgPokemon != null) {
+            // Si no hay URL, ocultamos el icono de galería por defecto
+            imgPokemon.setImageDrawable(null)
         }
 
         // CONFIGURACIÓN DEL CRITERIO 5: Acción del botón cerrar
@@ -59,5 +63,14 @@ class RetoDialogFragment(
             dismiss()   // 1. Hace desaparecer este diálogo
             alCerrar()  // 2. Avisa a la MainActivity para que deje el juego listo para otra partida
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // Forzamos el ancho del diálogo para que ocupe casi toda la pantalla
+        dialog?.window?.setLayout(
+            (resources.displayMetrics.widthPixels * 0.90).toInt(),
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 }

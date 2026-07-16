@@ -13,4 +13,33 @@
     <string name="boton_calificar">Calificar</string>
     <string name="boton_calificar_despues">Calificar después</string>
     <string name="mensaje_agradecimiento_calificacion">¡Gracias por tu opinión! Te llevamos a Play Store para calificar</string>
+
+    <!-- Pantalla de Retos (HU-0 / HU 6.0) -->
+    <string name="titulo_retos">Retos</string>
+    <string name="desc_volver">Volver</string>
+    <string name="desc_agregar_reto">Agregar reto</string>
+    <string name="desc_icono_reto">Reto</string>
+    <string name="desc_editar_reto">Editar reto</string>
+    <string name="desc_eliminar_reto">Eliminar reto</string>
+
+    <!-- Diálogo Agregar reto (HU 7.0) -->
+    <string name="titulo_agregar_reto">Agregar reto</string>
+    <string name="hint_escriba_reto">Escriba el reto</string>
+    <string name="boton_cancelar">Cancelar</string>
+    <string name="boton_guardar">Guardar</string>
+
+    <!-- Diálogo Editar reto (HU 8.0) -->
+    <string name="titulo_editar_reto">Editar reto</string>
+
+    <!-- Diálogo Eliminar reto (HU 9.0) -->
+    <string name="titulo_eliminar_reto">¿Desea eliminar el siguiente reto?:</string>
+    <string name="texto_si">SI</string>
+    <string name="texto_no">NO</string>
+    <!-- Instrucciones (HU 5.0) -->
+    <string name="titulo_reglas">Reglas del Juego</string>
+    <string name="pregunta_como_jugar">¿Cómo se juega?</string>
+    <string name="descripcion_como_jugar">Los jugadores forman un círculo y en el centro colocan el dispositivo móvil, luego tocan el botón parpadeante para girar la botella. El jugador que señale la botella debe cumplir el reto que lanza la app, de lo contrario abandona el juego.</string>
+    <string name="pregunta_quien_gana">¿Quién gana?</string>
+    <string name="descripcion_quien_gana">Gana el último jugador que no abandone el juego.</string>
+    <string name="texto_ganaste">¡Ganaste!</string>
 </resources>
