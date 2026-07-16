@@ -103,7 +103,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.iconoAgregar.setOnClickListener {
-            startActivity(Intent(this, RetosActivity::class.java))
+            it.animate().scaleX(0.85f).scaleY(0.85f).setDuration(100).withEndAction {
+                it.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+
+
+                startActivity(android.content.Intent(this, RetosActivity::class.java))
+            }.start()
         }
 
         binding.iconoCompartir.setOnClickListener {
