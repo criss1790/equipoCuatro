@@ -5,4 +5,8 @@
     <color name="naranja">#FF6A00</color>
     <color name="naranja_oscuro">#CC5500</color>
     <color name="gris_oscuro">#2B2B2B</color>
+    <color name="amarillo">#FFD500</color>
+    <color name="azul">#2E9CFF</color>
+    <color name="verde">#2ECC71</color>
+    <color name="vinotinto">#800020</color>
 </resources>

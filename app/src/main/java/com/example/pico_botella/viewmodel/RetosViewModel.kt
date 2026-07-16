@@ -95,8 +95,13 @@ class RetosViewModel(
 
     // Cuenta hacia atrás desde el valor inicial hasta cero usando coroutines
     private fun iniciarContadorRegresivo() {
-        // Se elimina la cuenta regresiva inicial del init para cumplir con el requisito
-        // de que el contador no aparezca al iniciar la app.
+        viewModelScope.launch {
+            _valorContador.value = Constantes.VALOR_INICIAL_CONTADOR
+            while (_valorContador.value > 0) {
+                delay(Constantes.MILISEGUNDOS_POR_PASO)
+                _valorContador.value -= 1
+            }
+        }
     }
 
     // Cambia el estado del sonido entre activo e inactivo

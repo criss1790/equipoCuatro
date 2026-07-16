@@ -19,6 +19,8 @@ import kotlinx.coroutines.launch
  */
 class SplashActivity : AppCompatActivity() {
 
+    private lateinit var animacionBotella: com.airbnb.lottie.LottieAnimationView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
@@ -26,6 +28,14 @@ class SplashActivity : AppCompatActivity() {
         ocultarBarrasDelSistema()
         iniciarAnimacionBotella()
         programarNavegacionAutomatica()
+    }
+
+    /**
+     * Detiene la animación Lottie al destruir la Activity para evitar fugas de memoria.
+     */
+    override fun onDestroy() {
+        animacionBotella.cancelAnimation()
+        super.onDestroy()
     }
 
     /**
@@ -53,10 +63,10 @@ class SplashActivity : AppCompatActivity() {
      * Obtiene la vista Lottie e inicia la animación de la botella en bucle infinito.
      */
     private fun iniciarAnimacionBotella() {
-        val imagenBotella: com.airbnb.lottie.LottieAnimationView = findViewById(R.id.imagenBotella)
-        imagenBotella.setAnimation(R.raw.botella)
-        imagenBotella.repeatCount = com.airbnb.lottie.LottieDrawable.INFINITE
-        imagenBotella.playAnimation()
+        animacionBotella = findViewById(R.id.imagenBotella)
+        animacionBotella.setAnimation(R.raw.botella)
+        animacionBotella.repeatCount = com.airbnb.lottie.LottieDrawable.INFINITE
+        animacionBotella.playAnimation()
     }
 
     /**

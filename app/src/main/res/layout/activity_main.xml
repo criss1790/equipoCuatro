@@ -108,7 +108,7 @@
         android:shadowDx="2"
         android:shadowDy="2"
         android:shadowRadius="4"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@id/imagenBotella"
         app:layout_constraintEnd_toEndOf="@id/imagenBotella"
         app:layout_constraintStart_toStartOf="@id/imagenBotella"
